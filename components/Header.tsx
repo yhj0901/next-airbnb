@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import AirbnbLogoIcon from '../public/static/svg/logo/logo.svg';
 import AirbnbLogoTextIcon from '../public/static/svg/logo/logo_text.svg';
 import Link from 'next/link';
 import palette from '../styles/palette';
+import SignUpModal from './auth/SignUpModal';
+import useModal from '../hooks/useModal';
 
 const Container = styled.div`
   position: sticky;
@@ -53,25 +55,59 @@ const Container = styled.div`
       }
     }
   }
+
+  .modal-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    .modal-background {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.75);
+      z-index: 10;
+    }
+
+    .modal-contents {
+      width: 400px;
+      height: 400px;
+      background-color: white;
+      z-index: 11;
+    }
+  }
 `;
 
 const Header: React.FC = () => {
+  /** 모달을 열고 닫을 boolean 값 */
+  const { openModal, ModalPortal } = useModal();
+
   return (
     <Container>
-      <Link href="/">
-        <a className="header-logo-wrapper">
-          <AirbnbLogoIcon className="header-logo" />
-          <AirbnbLogoTextIcon />
-        </a>
+      <Link className="header-logo-wrapper" href="/" passHref>
+        <AirbnbLogoIcon className="header-logo" />
+        <AirbnbLogoTextIcon />
       </Link>
       <div className="header-auth-buttons">
-        <button type="button" className="header-sign-up-button">
+        <button
+          type="button"
+          className="header-sign-up-button"
+          onClick={openModal}
+        >
           회원가입
         </button>
         <button type="button" className="header-login-button">
           로그인
         </button>
       </div>
+
+      <ModalPortal>
+        <SignUpModal />
+      </ModalPortal>
     </Container>
   );
 };
