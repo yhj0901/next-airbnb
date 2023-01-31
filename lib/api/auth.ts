@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { UserType } from '../../types/user';
 //* 회원가입 body
 export interface SingUpAPIBody {
   email: string;
@@ -12,4 +13,4 @@ export interface SingUpAPIBody {
  * 회원가입 api
  */
 export const signupAPI = (body: SingUpAPIBody) =>
-  axios.post('/api/auth/signup', body);
+  axios.post<UserType>('/api/auth/signup', body);

@@ -11,6 +11,8 @@ import { monthList, dayList, yearList } from '../../lib/staticData';
 import Selector from '../common/Selector';
 import Button from '../common/Button';
 import { signupAPI } from '../../lib/api/auth';
+import { useDispatch } from 'react-redux';
+import { userActions } from '../../store/user';
 
 const Container = styled.form`
   width: 568px;
@@ -79,6 +81,7 @@ const SignUpModal: React.FC = () => {
   const [birthYear, setBirthYear] = useState<string | undefined>();
   const [birthDay, setBirthDay] = useState<string | undefined>();
   const [birthMonth, setBirthMonth] = useState<string | undefined>();
+  const dispatch = useDispatch();
 
   /**
    * 생년월일 월 변경 시
@@ -153,7 +156,8 @@ const SignUpModal: React.FC = () => {
         ).toISOString(),
       };
 
-      await signupAPI(signUpBody);
+      const { data } = await signupAPI(signUpBody);
+      dispatch(userActions.setLoggedUser(data));
     } catch (e) {
       console.log(e);
     }
